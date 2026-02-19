@@ -99,18 +99,51 @@ This initiative supports 2026 cost-reduction mandates.
 
 ------------------------------------------------------------------------
 
-## 🏗️ Architecture Overview
+flowchart LR
+  %% =========================
+  %% Test Cycle AI Automation
+  %% =========================
 
-### Core Flow
+  %% Actors
+  AE[Automation Engineer / System Engineer\nPrompts with failure data] -->|Initiates| TOG
 
-Automation Engineer\
-→ Test Objects Generator\
-→ Orchestration Service\
-→ MongoDB (Operational + Vector Search)\
-→ LLaMA (RAG-based generation)\
-→ Playwright Execution\
-→ Self-Healing Module\
-→ MongoDB (Store outcomes & embeddings)
+  %% Test Objects Generator
+  subgraph TOG[Test Objects Generator]
+    BU[Browser Use\nScans UI + gathers context]
+    ORCH[Orchestration Service (Python)\nTranslates UI data, manages Prompts,\ncoordinates integrated tools]
+    BU --> ORCH
+  end
+
+  %% LLM
+  ORCH -->|Sends context & calls LLM| LLM[LLaMA (On-Prem)\nSecure on-prem AI engine]
+
+  %% Integrated tools
+  subgraph TOOLS[Integrated Tools]
+    PR[Playwright Code Repo\nRuns AI-generated scripts]
+    TCM[Test Case Management Tool\nSystem of record for test cases\n(requirements/defects linkage)]
+  end
+
+  %% LLM outputs
+  LLM -->|Commits code| PR
+  LLM -->|Creates/updates test cases| TCM
+
+  %% Self-healing
+  ORCH --> SH[Self-Healing Module\nUpdates tests based on UI/code changes\nProposes fixes for failed tests]
+  SH -->|Fix PR scripts| PR
+
+  %% MongoDB (On-Prem)
+  MDB[(MongoDB (On-Prem)\nOperational Data + Vector Embeddings)]
+  ORCH <--> |Store/Retrieve context\n(Vector Search / RAG)| MDB
+  LLM  <--> |Retrieve relevant context\n(Vector Search / RAG)| MDB
+  SH   <--> |Store outcomes + learnings\n(Self-heal memory)| MDB
+  TCM  -->  |Sync test case records| MDB
+
+  %% Notes
+  NOTE[[On-Prem deployment required\n(hospital/provider security constraints)]]
+  NOTE --- TOG
+  NOTE --- LLM
+  NOTE --- MDB
+
 
 ------------------------------------------------------------------------
 
