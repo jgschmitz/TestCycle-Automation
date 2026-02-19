@@ -99,8 +99,6 @@ This initiative supports 2026 cost-reduction mandates.
 
 ------------------------------------------------------------------------
 
-## 🏗️ System Architecture
-
 ```mermaid
 flowchart LR
 
@@ -117,12 +115,12 @@ Coordinates integrated tools"]
   BU --> ORCH
 end
 
-ORCH -->|Sends context and calls LLM| LLM["LLaMA (On-Prem)
-Secure on-prem AI engine"]
+ORCH -->|Sends context and calls LLM| LLM["LLaMA On Prem
+Secure on prem AI engine"]
 
 subgraph TOOLS["Integrated Tools"]
   PR["Playwright Code Repo
-Runs AI-generated scripts"]
+Runs AI generated scripts"]
   TCM["Test Case Management Tool
 System of record for test cases"]
 end
@@ -130,20 +128,22 @@ end
 LLM -->|Commits code| PR
 LLM -->|Creates or updates test cases| TCM
 
-ORCH --> SH["Self-Healing Module
+ORCH --> SH["Self Healing Module
 Updates tests based on UI or code changes
 Proposes fixes for failed tests"]
 
 SH -->|Fix PR scripts| PR
 
-MDB["MongoDB (On-Prem)
-Operational Data and Vector Embeddings"]
+MDB["MongoDB On Prem
+Operational data
+Vector embeddings"]
 
-ORCH <--> |Store and retrieve context (Vector Search / RAG)| MDB
-LLM  <--> |Retrieve relevant context (Vector Search / RAG)| MDB
+ORCH <--> |Store and retrieve context via vector search| MDB
+LLM  <--> |Retrieve relevant context via vector search| MDB
 SH   <--> |Store outcomes and learnings| MDB
 TCM  -->  |Sync test case records| MDB
 ```
+
 
 
 
