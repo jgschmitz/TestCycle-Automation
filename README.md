@@ -98,37 +98,53 @@ This initiative supports 2026 cost-reduction mandates.
 -   Self-heal success rate
 
 ------------------------------------------------------------------------
+
+## 🏗️ System Architecture
+
 ```mermaid
 flowchart LR
 
-AE[Automation Engineer / System Engineer<br/>Prompts with failure data] -->|Initiates| ORCH
+AE["Automation Engineer / System Engineer
+Prompts with failure data"] -->|Initiates| ORCH
 
-subgraph TOG[Test Objects Generator]
-  BU[Browser Use<br/>Scans UI + gathers context]
-  ORCH[Orchestration Service (Python)<br/>Translates UI data, manages Prompts,<br/>coordinates integrated tools]
+subgraph TOG["Test Objects Generator"]
+  BU["Browser Use
+Scans UI and gathers context"]
+  ORCH["Orchestration Service (Python)
+Translates UI data
+Manages Prompts
+Coordinates integrated tools"]
   BU --> ORCH
 end
 
-ORCH -->|Sends context & calls LLM| LLM[LLaMA (On-Prem)<br/>Secure on-prem AI engine]
+ORCH -->|Sends context and calls LLM| LLM["LLaMA (On-Prem)
+Secure on-prem AI engine"]
 
-subgraph TOOLS[Integrated Tools]
-  PR[Playwright Code Repo<br/>Runs AI-generated scripts]
-  TCM[Test Case Management Tool<br/>System of record for test cases]
+subgraph TOOLS["Integrated Tools"]
+  PR["Playwright Code Repo
+Runs AI-generated scripts"]
+  TCM["Test Case Management Tool
+System of record for test cases"]
 end
 
 LLM -->|Commits code| PR
-LLM -->|Creates/updates test cases| TCM
+LLM -->|Creates or updates test cases| TCM
 
-ORCH --> SH[Self-Healing Module<br/>Updates tests based on UI/code changes<br/>Proposes fixes for failed tests]
+ORCH --> SH["Self-Healing Module
+Updates tests based on UI or code changes
+Proposes fixes for failed tests"]
+
 SH -->|Fix PR scripts| PR
 
-MDB[(MongoDB (On-Prem)<br/>Operational Data + Vector Embeddings)]
+MDB["MongoDB (On-Prem)
+Operational Data and Vector Embeddings"]
 
-ORCH <--> |Store/Retrieve context<br/>(Vector Search / RAG)| MDB
-LLM  <--> |Retrieve relevant context<br/>(Vector Search / RAG)| MDB
-SH   <--> |Store outcomes + learnings<br/>(Self-heal memory)| MDB
+ORCH <--> |Store and retrieve context (Vector Search / RAG)| MDB
+LLM  <--> |Retrieve relevant context (Vector Search / RAG)| MDB
+SH   <--> |Store outcomes and learnings| MDB
 TCM  -->  |Sync test case records| MDB
 ```
+
 
 
 ------------------------------------------------------------------------
