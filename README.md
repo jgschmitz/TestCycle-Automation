@@ -99,6 +99,7 @@ This initiative supports 2026 cost-reduction mandates.
 
 ------------------------------------------------------------------------
 
+```mermaid
 flowchart LR
   %% =========================
   %% Test Cycle AI Automation
@@ -196,6 +197,7 @@ Workload Pattern:
 -   Write-heavy during releases\
 -   Read-heavy during execution\
 -   Vector similarity queries during AI generation
+```
 
 ------------------------------------------------------------------------
 
