@@ -98,52 +98,37 @@ This initiative supports 2026 cost-reduction mandates.
 -   Self-heal success rate
 
 ------------------------------------------------------------------------
-
 ```mermaid
 flowchart LR
-  %% =========================
-  %% Test Cycle AI Automation
-  %% =========================
 
-  %% Actors
-  AE[Automation Engineer / System Engineer\nPrompts with failure data] -->|Initiates| TOG
+AE[Automation Engineer / System Engineer<br/>Prompts with failure data] -->|Initiates| ORCH
 
-  %% Test Objects Generator
-  subgraph TOG[Test Objects Generator]
-    BU[Browser Use\nScans UI + gathers context]
-    ORCH[Orchestration Service (Python)\nTranslates UI data, manages Prompts,\ncoordinates integrated tools]
-    BU --> ORCH
-  end
+subgraph TOG[Test Objects Generator]
+  BU[Browser Use<br/>Scans UI + gathers context]
+  ORCH[Orchestration Service (Python)<br/>Translates UI data, manages Prompts,<br/>coordinates integrated tools]
+  BU --> ORCH
+end
 
-  %% LLM
-  ORCH -->|Sends context & calls LLM| LLM[LLaMA (On-Prem)\nSecure on-prem AI engine]
+ORCH -->|Sends context & calls LLM| LLM[LLaMA (On-Prem)<br/>Secure on-prem AI engine]
 
-  %% Integrated tools
-  subgraph TOOLS[Integrated Tools]
-    PR[Playwright Code Repo\nRuns AI-generated scripts]
-    TCM[Test Case Management Tool\nSystem of record for test cases\n(requirements/defects linkage)]
-  end
+subgraph TOOLS[Integrated Tools]
+  PR[Playwright Code Repo<br/>Runs AI-generated scripts]
+  TCM[Test Case Management Tool<br/>System of record for test cases]
+end
 
-  %% LLM outputs
-  LLM -->|Commits code| PR
-  LLM -->|Creates/updates test cases| TCM
+LLM -->|Commits code| PR
+LLM -->|Creates/updates test cases| TCM
 
-  %% Self-healing
-  ORCH --> SH[Self-Healing Module\nUpdates tests based on UI/code changes\nProposes fixes for failed tests]
-  SH -->|Fix PR scripts| PR
+ORCH --> SH[Self-Healing Module<br/>Updates tests based on UI/code changes<br/>Proposes fixes for failed tests]
+SH -->|Fix PR scripts| PR
 
-  %% MongoDB (On-Prem)
-  MDB[(MongoDB (On-Prem)\nOperational Data + Vector Embeddings)]
-  ORCH <--> |Store/Retrieve context\n(Vector Search / RAG)| MDB
-  LLM  <--> |Retrieve relevant context\n(Vector Search / RAG)| MDB
-  SH   <--> |Store outcomes + learnings\n(Self-heal memory)| MDB
-  TCM  -->  |Sync test case records| MDB
+MDB[(MongoDB (On-Prem)<br/>Operational Data + Vector Embeddings)]
 
-  %% Notes
-  NOTE[[On-Prem deployment required\n(hospital/provider security constraints)]]
-  NOTE --- TOG
-  NOTE --- LLM
-  NOTE --- MDB
+ORCH <--> |Store/Retrieve context<br/>(Vector Search / RAG)| MDB
+LLM  <--> |Retrieve relevant context<br/>(Vector Search / RAG)| MDB
+SH   <--> |Store outcomes + learnings<br/>(Self-heal memory)| MDB
+TCM  -->  |Sync test case records| MDB
+```
 
 
 ------------------------------------------------------------------------
