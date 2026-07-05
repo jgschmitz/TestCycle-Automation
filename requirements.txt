@@ -20,6 +20,7 @@ pydantic>=2.5.0
 
 # Logging & Monitoring
 python-json-logger>=2.0.0
+suggs-muggs>=1.1.0
 
 # Optional: Alternative embeddings
 # transformers>=4.35.0  # For custom embedding models
