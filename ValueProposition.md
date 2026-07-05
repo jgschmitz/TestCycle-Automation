@@ -3,7 +3,7 @@
 
 ---
 
-## 🎯 Executive Summary
+##  Executive Summary
 
 **MongoDB is not optional** for this AI-powered test automation system serving 8 hospital clients.
 
